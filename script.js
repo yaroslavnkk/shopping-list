@@ -17,6 +17,10 @@ function addItem(e){
         alert('Please, input text');
         return;
     }
+    if(checkIfItemExists(input)){
+        alert('Item already exists');
+        return;
+    }
     addItemToDOM(input);
     addItemToLocalStorage(input);
     itemInput.value = '';
@@ -78,7 +82,7 @@ function removeItemFromLocalStorage(text){
 function clearItems(){
     while(list.firstChild){
         list.removeChild(list.firstChild);
-        removeItemFromLocalStorage(list.firstChild.textContent);
+        localStorage.removeItem('items');
     }
     checkUI();
 }
@@ -102,6 +106,10 @@ function filterItems(e){
             item.style.display = 'flex'
         }
     })
+}
+function checkIfItemExists(item){
+    const itemsInLocalStorage = getItemsFromLocalStorage();
+    return itemsInLocalStorage.includes(item);
 }
 function init(){
     form.addEventListener('submit', addItem);
